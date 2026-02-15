@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Authority Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="navbar">
+    Authority Dashboard
+</div>
+
+<div class="container">
+    <h2>Welcome {{ session['name'] }}</h2>
+    <p>Role: Authority</p>
+
+    <a href="/logout">
+        <button>Logout</button>
+    </a>
+</div>
+
+</body>
+</html>

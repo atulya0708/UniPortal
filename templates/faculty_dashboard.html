@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Faculty Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="navbar">
+    Faculty Dashboard
+</div>
+
+<div class="container">
+    <h2>Welcome {{ session['name'] }}</h2>
+    <p>Role: Faculty</p>
+
+    <a href="/logout">
+        <button>Logout</button>
+    </a>
+</div>
+
+</body>
+</html>
