@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Opportunities | The Professor's Call</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #2563eb; --bg: #f8fafc; --sidebar: #1e293b; --accent: #10b981; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; display: flex; }
+        .sidebar { width: 260px; background: var(--sidebar); height: 100vh; color: white; position: fixed; padding: 20px; }
+        .main-content { margin-left: 260px; padding: 40px; width: 100%; }
+        
+        /* Opportunity Cards */
+        .opp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; margin-top: 20px; }
+        .opp-card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 5px solid var(--accent); }
+        .status-badge { font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; float: right; }
+        .btn-apply { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 15px; }
+        
+        /* Application History Table */
+        .history-section { margin-top: 50px; background: white; padding: 20px; border-radius: 12px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #f1f5f9; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>PILLAR IV</h2>
+        <a href="/dashboard" style="color: #cbd5e1; text-decoration: none;"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    </div>
+
+    <div class="main-content">
+        <h1>The Professor's Call</h1>
+        <p>Browse internship and research opportunities curated by faculty.</p>
+
+        <div style="background: white; padding: 15px; border-radius: 8px; display: flex; gap: 15px; align-items: center;">
+            <i class="fas fa-filter"></i>
+            <select id="deptFilter" style="padding: 8px; border-radius: 5px; border: 1px solid #ddd;">
+                <option value="">All Departments</option>
+                <option value="CSE">CSE</option>
+                <option value="EE">Electrical</option>
+            </select>
+            <input type="text" placeholder="Search skills (e.g. Python)..." style="padding: 8px; flex: 1; border-radius: 5px; border: 1px solid #ddd;">
+        </div>
+
+        <div class="opp-grid">
+            {% for opp in opps %}
+            <div class="opp-card">
+                <span class="status-badge" style="background: #d1fae5; color: #065f46;">{{ opp.status }}</span>
+                <h3>{{ opp.title }}</h3>
+                <p style="color: #64748b; font-size: 0.9rem;">{{ opp.description[:100] }}...</p>
+                <div style="margin: 15px 0; font-size: 0.85rem;">
+                    <strong><i class="fas fa-tools"></i> Skills:</strong> {{ opp.required_skills }}<br>
+                    <strong><i class="fas fa-indian-rupee-sign"></i> Stipend:</strong> {{ opp.stipend }}<br>
+                    <strong><i class="fas fa-calendar-check"></i> Deadline:</strong> {{ opp.deadline }}
+                </div>
+                <button class="btn-apply">Apply with Resume</button>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="history-section">
+            <h3>Your Application History</h3>
+            <table>
+                <thead>
+                    <tr><th>Opportunity</th><th>Department</th><th>Status</th><th>Date Applied</th></tr>
+                </thead>
+                <tbody>
+                    {% for app in my_apps %}
+                    <tr>
+                        <td>{{ app.title }}</td>
+                        <td>{{ app.department }}</td>
+                        <td><span class="status-badge">{{ app.status }}</span></td>
+                        <td>{{ app.applied_date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

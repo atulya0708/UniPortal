@@ -3,10 +3,23 @@
 <head>
     <title>Authority Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Basic styling for the table and badges */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; color: white; }
+        th, td { padding: 12px; border: 1px solid #444; text-align: left; }
+        th { background-color: #333; }
+        .badge { padding: 5px 10px; border-radius: 4px; font-size: 0.8em; font-weight: bold; }
+        .priority-Urgent { background-color: #ff4d4d; color: white; }
+        .priority-High { background-color: #ffa500; color: black; }
+        .status-Resolved { color: #4caf50; font-weight: bold; }
+        .update-form { display: flex; gap: 5px; }
+        input[type="text"] { padding: 5px; border-radius: 4px; border: 1px solid #666; background: #222; color: white; }
+    </style>
 </head>
 <body>
 
 <div class="navbar">
+<<<<<<< HEAD
     <div>Authority Dashboard</div>
     <div>
         <button onclick="toggleMode()">🌙</button>
@@ -31,6 +44,73 @@
         <button>Open</button>
         </div>
 
+=======
+    Authority Dashboard - The Watcher's Eye
+</div>
+
+<div class="container">
+    <h2>Welcome, {{ session['name'] }}</h2>
+    <p>Role: {{ session['role'] }}</p>
+
+    <hr>
+
+    <h3>Active Grievances</h3>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Issue</th>
+                <th>Category</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Authority Remarks</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for issue in issues %}
+            <tr>
+                <td>{{ issue.student_name }}</td>
+                <td>
+                    <strong>{{ issue.title }}</strong><br>
+                    <small>{{ issue.description }}</small>
+                </td>
+                <td>{{ issue.category }}</td>
+                <td>
+                    <span class="badge priority-{{ issue.priority }}">
+                        {{ issue.priority }}
+                    </span>
+                </td>
+                <td class="status-{{ issue.status }}">{{ issue.status }}</td>
+                <td>
+                    <i>{{ issue.remarks if issue.remarks else 'Pending resolution notes...' }}</i>
+                </td>
+                <td>
+                    <form action="/update_issue/{{ issue.id }}" method="POST" class="update-form">
+                        <select name="status">
+                            <option value="Under Review" {% if issue.status == 'Under Review' %}selected{% endif %}>Under Review</option>
+                            <option value="In Progress" {% if issue.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                            <option value="Resolved" {% if issue.status == 'Resolved' %}selected{% endif %}>Resolved</option>
+                        </select>
+                        <input type="text" name="remarks" placeholder="Add remarks..." required>
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" style="text-align: center;">No issues reported yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <a href="/logout">
+        <button style="background-color: #ff4d4d; color: white; border: none; padding: 10px 20px; cursor: pointer;">Logout</button>
+    </a>
+>>>>>>> b101d6c (whole project)
 </div>
 
 <script src="{{ url_for('static', filename='theme.js') }}"></script>
