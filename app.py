@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
 import requests
+from flask_bcrypt import Bcrypt
 from bs4 import BeautifulSoup
 from datetime import datetime, date
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 app.secret_key = "iit_mandi_portal_key"
 
 def get_db():
@@ -118,7 +120,6 @@ def login_page():
 
 @app.route("/login", methods=["POST"])
 def login():
-<<<<<<< HEAD
     email = request.form["email"]
     password = request.form["password"]
 
@@ -136,6 +137,8 @@ def login():
         if bcrypt.check_password_hash(stored_password, password):
             session["name"] = name
             session["role"] = role
+            session["email"] = email
+            session["roll_no"] = email.split('@')[0].upper()
 
             if role == "student":
                 return redirect(url_for("dashboard"))
@@ -157,68 +160,17 @@ def login():
     return "Invalid Login"
 
 
-=======
-    email = request.form["email"].lower()
-    if email.endswith("@students.iitmandi.ac.in"):
-        session["email"] = email 
-        session["role"] = "student"
-        return redirect(url_for("dashboard"))
-    return "Invalid Login: Use your @students.iitmandi.ac.in email."
->>>>>>> b101d6c (whole project)
-
-
 
 @app.route("/dashboard")
 def dashboard():
     if "role" not in session:
         return redirect(url_for("login_page"))
-<<<<<<< HEAD
-    return render_template("dashboard.html")
-
-@app.route("/faculty_dashboard")
-def faculty_dashboard():
-    if "role" not in session or session["role"] != "faculty":
-        return redirect(url_for("login_page"))
-    return render_template("faculty_dashboard.html")
-
-
-@app.route("/admin_dashboard")
-def admin_dashboard():
-    if session.get("role") != "admin":
-        return redirect(url_for("login_page"))
-
-    conn = get_db()
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT COUNT(*) FROM users")
-    total_users = cursor.fetchone()[0]
-
-    cursor.execute("SELECT COUNT(*) FROM complaints")
-    total_complaints = cursor.fetchone()[0]
-
-    cursor.execute("SELECT name, email, role FROM users")
-    users = cursor.fetchall()
-
-    cursor.execute("SELECT action, timestamp FROM logs ORDER BY id DESC LIMIT 10")
-    logs = cursor.fetchall()
-
-    cursor.execute("SELECT name, email, role FROM users")
-    users = cursor.fetchall()
-
-    conn.close()
-
-    return render_template(
-        "admin_dashboard.html",
-        total_users=total_users,
-        total_complaints=total_complaints,
-        users=users,
-        logs=logs
-    )
-=======
->>>>>>> b101d6c (whole project)
     
     email = session.get("email")
-    roll_no = email.split('@')[0].upper()
+    if not email:
+        return redirect(url_for("login_page"))
+
+    roll_no = session.get("roll_no")
     batch_prefix = roll_no[:3]
 
     # 1. Fetch Real-time Data from Samarth & LMS
@@ -279,7 +231,49 @@ def admin_dashboard():
                            issues=issues, 
                            roll_no=roll_no,
                            stats=display_stats, # For Course Management
-                           vault=vault_resources) # For Resource Repository
+                           vault=vault_resources) 
+    
+
+@app.route("/faculty_dashboard")
+def faculty_dashboard():
+    if "role" not in session or session["role"] != "faculty":
+        return redirect(url_for("login_page"))
+    return render_template("faculty_dashboard.html")
+
+
+@app.route("/admin_dashboard")
+def admin_dashboard():
+    if session.get("role") != "admin":
+        return redirect(url_for("login_page"))
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM users")
+    total_users = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM complaints")
+    total_complaints = cursor.fetchone()[0]
+
+    cursor.execute("SELECT name, email, role FROM users")
+    users = cursor.fetchall()
+
+    cursor.execute("SELECT action, timestamp FROM logs ORDER BY id DESC LIMIT 10")
+    logs = cursor.fetchall()
+
+    cursor.execute("SELECT name, email, role FROM users")
+    users = cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        "admin_dashboard.html",
+        total_users=total_users,
+        total_complaints=total_complaints,
+        users=users,
+        logs=logs
+    )
+
 
 # Browse Opportunities with smart filtering
 @app.route("/opportunities")
@@ -404,8 +398,7 @@ def announcements():
 @app.route("/logout")
 def logout():
     session.clear()
-<<<<<<< HEAD
-    return redirect(url_for("start"))
+    return redirect(url_for("login_page"))
 
 @app.route("/test")
 def test():
@@ -415,9 +408,6 @@ def test():
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5002, debug=True)
 
-=======
-    return redirect(url_for("login_page"))
+    
 
-if __name__ == "__main__":
-    app.run(debug=True)
->>>>>>> b101d6c (whole project)
+

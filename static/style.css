@@ -240,3 +240,38 @@ h2 {
 p {
     margin-top: 0;
 }
+
+body {
+    background-color: white;
+    color: black;
+    transition: 0.3s;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+/* Example card or container styling */
+.dark-mode .card {
+    background-color: #1e1e1e;
+    color: white;
+}
+
+.dark-mode {
+    background-color: #0f172a;
+    color: #e2e8f0;
+}
+
+.dark-mode .card,
+.dark-mode .ledger-container,
+.dark-mode .stat-card,
+.dark-mode table {
+    background-color: #1e293b;
+    color: #e2e8f0;
+}
+
+.dark-mode .sidebar {
+    background-color: #020617;
+}
