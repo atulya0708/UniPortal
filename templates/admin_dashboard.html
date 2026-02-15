@@ -4,20 +4,43 @@
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
 
-<div class="navbar">
-    Admin Dashboard
-</div>
+<h2>Admin Dashboard</h2>
+<p>Welcome {{ session['name'] }}</p>
 
-<div class="container">
-    <h2>Welcome {{ session['name'] }}</h2>
-    <p>Role: Admin</p>
+<h3>System Analytics</h3>
+<p>Total Users: {{ total_users }}</p>
+<p>Total Complaints: {{ total_complaints }}</p>
 
-    <a href="/logout">
-        <button>Logout</button>
-    </a>
-</div>
+<h3>User Management</h3>
+<table border="1">
+<tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Role</th>
+</tr>
+
+{% for user in users %}
+<tr>
+    <td>{{ user[0] }}</td>
+    <td>{{ user[1] }}</td>
+    <td>{{ user[2] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<h3>Recent Activity Logs</h3>
+<ul>
+{% for log in logs %}
+    <li>{{ log[0] }} — {{ log[1] }}</li>
+{% endfor %}
+</ul>
+
+<a href="/logout">
+    <button>Logout</button>
+</a>
 
 </body>
 </html>

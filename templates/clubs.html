@@ -1,0 +1,11 @@
+<h2>Campus Clubs</h2>
+
+{% for club in clubs %}
+    <div class="card">
+        <h3>{{ club[1] }}</h3>
+        <p>{{ club[2] }}</p>
+        <a href="/club/{{ club[0] }}">
+            <button>View Club</button>
+        </a>
+    </div>
+{% endfor %}

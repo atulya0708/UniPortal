@@ -7,17 +7,33 @@
 <body>
 
 <div class="navbar">
-    Student Dashboard
+    <div>Student Dashboard</div>
+    <div>
+        <button onclick="toggleMode()">🌙</button>
+        <a href="/logout"><button>Logout</button></a>
+    </div>
 </div>
 
-<div class="container">
-    <h2>Welcome {{ session['name'] }}</h2>
-    <p>Role: Student</p>
+<div class="dashboard-container">
 
-    <a href="/logout">
-        <button>Logout</button>
-    </a>
+    <div class="card">
+    <h3>📩 Submit Complaint</h3>
+    <button>Open</button>
 </div>
+
+<div class="card">
+    <h3>📄 View Complaints</h3>
+    <button>Open</button>
+</div>
+
+<div class="card">
+    <h3>📢 Announcements</h3>
+    <button>Open</button>
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='theme.js') }}"></script>
 
 </body>
 </html>

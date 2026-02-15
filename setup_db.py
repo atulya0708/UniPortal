@@ -1,5 +1,3 @@
-print("hello world")
-
 import sqlite3
 from flask_bcrypt import Bcrypt
 from flask import Flask
@@ -21,6 +19,53 @@ CREATE TABLE IF NOT EXISTS users (
     role TEXT
 )
 """)
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    action TEXT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+)
+""")
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS complaints (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT,
+    complaint_text TEXT,
+    status TEXT DEFAULT 'Pending'
+)
+""")
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS clubs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    description TEXT
+)
+""")
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS club_members (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    club_id INTEGER,
+    email TEXT
+)
+""")
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS announcements (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    content TEXT,
+    category TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+)
+""")
+
+conn.commit()
+
+
 
 # Create users with different passwords
 users = [
